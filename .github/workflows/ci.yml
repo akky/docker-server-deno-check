@@ -1,0 +1,31 @@
+name: Official Docker Deno image Build & Run Test with older Docker Server versions
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-docker-versions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        docker_version: ["20.10.7", "23.0.6", "24.0.2"]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure Docker
+        id: setup_docker
+        uses: docker/setup-docker-action@v4
+        with:
+          version: ${{ matrix.docker_version }}
+          channel: stable
+
+      - name: Verify Docker Version
+        run: docker --version
+
+      - name: Run Docker Deno image with version
+        run: docker run --rm denoland/deno eval 'console.log("server version ${{ matrix.docker_version }}");'
+        continue-on-error: true
