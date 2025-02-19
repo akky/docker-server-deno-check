@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        docker_version: ["20.10.7", "23.0.6", "24.0.2"]
+        docker_version: ["20.10.24", "23.0.6", "24.0.9"]
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -28,4 +28,4 @@ jobs:
 
       - name: Run Docker Deno image with version
         run: docker run --rm denoland/deno eval 'console.log("server version ${{ matrix.docker_version }}");'
-        continue-on-error: true
+        #continue-on-error: true
